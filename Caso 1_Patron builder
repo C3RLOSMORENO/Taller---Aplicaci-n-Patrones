@@ -1,0 +1,72 @@
+# Clase Producto: CV (Currículum Vitae)
+class CV:
+    def __init__(self):
+        self.informacion_personal = None
+        self.experiencia_laboral = []
+        self.educacion = []
+        self.habilidades = []
+        self.proyectos = []
+        self.referencias = []
+
+    def mostrar_cv(self):
+        cv_str = f"Información Personal: {self.informacion_personal}\n"
+        cv_str += "Experiencia Laboral:\n" + "\n".join(self.experiencia_laboral) + "\n"
+        cv_str += "Educación:\n" + "\n".join(self.educacion) + "\n"
+        cv_str += "Habilidades:\n" + ", ".join(self.habilidades) + "\n"
+        cv_str += "Proyectos:\n" + "\n".join(self.proyectos) + "\n"
+        cv_str += "Referencias:\n" + "\n".join(self.referencias) + "\n"
+        return cv_str
+
+# Clase Builder: CVBuilder
+class CVBuilder:
+    def __init__(self):
+        self.cv = CV()
+
+    def set_informacion_personal(self, info):
+        self.cv.informacion_personal = info
+        return self
+
+    def add_experiencia_laboral(self, experiencia):
+        self.cv.experiencia_laboral.append(experiencia)
+        return self
+
+    def add_educacion(self, educacion):
+        self.cv.educacion.append(educacion)
+        return self
+
+    def add_habilidades(self, habilidad):
+        self.cv.habilidades.append(habilidad)
+        return self
+
+    def add_proyectos(self, proyecto):
+        self.cv.proyectos.append(proyecto)
+        return self
+
+    def add_referencias(self, referencia):
+        self.cv.referencias.append(referencia)
+        return self
+
+    def build(self):
+        return self.cv
+
+# Clase Director: GeneradorCV
+class GeneradorCV:
+    def __init__(self, builder):
+        self.builder = builder
+
+    def construir_cv_completo(self):
+        return (self.builder
+                .set_informacion_personal("Juan Pérez, contacto: juan@example.com")
+                .add_experiencia_laboral("Desarrollador en Empresa A (2020-2023)")
+                .add_educacion("Ingeniería de Software, Universidad B")
+                .add_habilidades("Python, Java, SQL")
+                .add_proyectos("Sistema de gestión de tareas con Python")
+                .add_referencias("Maria García, ex-jefa en Empresa A")
+                .build())
+
+# Prueba del patrón Builder
+if __name__ == "__main__":
+    builder = CVBuilder()
+    generador = GeneradorCV(builder)
+    cv = generador.construir_cv_completo()  
+    print(cv.mostrar_cv())
