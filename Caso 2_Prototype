@@ -1,0 +1,67 @@
+import copy
+
+# Prototipo: Documento
+class Documento:
+    def __init__(self, titulo, contenido):
+        self.titulo = titulo
+        self.contenido = contenido
+
+    def clonar(self):
+        # Usamos deepcopy para clonar el documento y mantener independencia del original
+        return copy.deepcopy(self)
+
+    def editar_contenido(self, nuevo_contenido):
+        self.contenido = nuevo_contenido
+
+    def mostrar_documento(self):
+        print(f"Titulo: {self.titulo}")
+        print(f"Contenido:\n{self.contenido}")
+
+# Prototipos Concretos: Plantillas de documentos
+class CurriculumVitae(Documento):
+    def __init__(self):
+        super().__init__("Curriculum Vitae", "Nombre: \nExperiencia: \nEducación: \n")
+
+class CartaPresentacion(Documento):
+    def __init__(self):
+        super().__init__("Carta de Presentación", "Estimado/a, \nSoy [Nombre], y me interesa el puesto de...")
+
+class Informe(Documento):
+    def __init__(self):
+        super().__init__("Informe", "Este informe cubre los siguientes puntos...\n")
+
+# Cliente: Editor de Documentos
+class EditorDocumentos:
+    def __init__(self):
+        self.plantillas = {
+            "cv": CurriculumVitae(),
+            "carta": CartaPresentacion(),
+            "informe": Informe()
+        }
+
+    def crear_documento_desde_plantilla(self, tipo_plantilla):
+        plantilla = self.plantillas.get(tipo_plantilla)
+        if plantilla:
+            return plantilla.clonar()
+        else:
+            print("Plantilla no encontrada.")
+            return None
+
+# Pruebas del patrón Prototype
+if __name__ == "__main__":
+    editor = EditorDocumentos()
+
+    # Crear un nuevo CV a partir de la plantilla
+    nuevo_cv = editor.crear_documento_desde_plantilla("cv")
+    nuevo_cv.editar_contenido("Nombre: Juan Pérez\nExperiencia: Desarrollador en Empresa A\nEducación: Universidad B")
+    nuevo_cv.mostrar_documento()
+
+    # Crear una nueva carta de presentación
+    nueva_carta = editor.crear_documento_desde_plantilla("carta")
+    nueva_carta.editar_contenido("Estimado/a, Soy María López y me interesa el puesto de Desarrolladora Web.")
+    nueva_carta.mostrar_documento()
+
+    # Crear un nuevo informe
+    nuevo_informe = editor.crear_documento_desde_plantilla("informe")
+    nuevo_informe.editar_contenido("Este informe cubre los siguientes puntos: eficiencia, rendimiento, resultados.")
+    nuevo_informe.mostrar_documento()
